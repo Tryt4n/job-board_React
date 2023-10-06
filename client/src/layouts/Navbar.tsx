@@ -54,8 +54,8 @@ export default function Navbar() {
                 </DropdownMenuTrigger>
 
                 <DropdownMenuContent>
-                  <DropdownMenuItem>
-                    <Link to={"/my-listings"}>My Listings</Link>
+                  <DropdownMenuItem asChild>
+                    <Link to={"/jobs/my-listings"}>My Listings</Link>
                   </DropdownMenuItem>
 
                   <DropdownMenuSeparator />
