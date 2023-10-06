@@ -3,14 +3,22 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { THEME_OPTIONS } from "@/constants/constants";
+import { useAuth } from "@/features/authentication";
 import { useTheme } from "@/hooks/useTheme";
-import { Menu, Moon, Sun } from "lucide-react";
+import { ChevronDown, Menu, Moon, Sun } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function Navbar() {
+  const { user, logout } = useAuth();
+
   return (
     <nav className="sticky top-0 z-10 border-b p-4 bg-white dark:bg-slate-950">
       <div className="container flex items-center justify-between gap-4">
@@ -33,6 +41,34 @@ export default function Navbar() {
               to={"/jobs"}
               label={"Job Listings"}
             />
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className="data-[state=open]:bg-slate-100 dark:data-[state=open]:bg-slate-800 cursor-pointer"
+                  >
+                    <span>{user.email}</span>
+                    <ChevronDown className="w-4 h-4 ml-2" />
+                  </Button>
+                </DropdownMenuTrigger>
+
+                <DropdownMenuContent>
+                  <DropdownMenuItem>
+                    <Link to={"/my-listings"}>My Listings</Link>
+                  </DropdownMenuItem>
+
+                  <DropdownMenuSeparator />
+
+                  <DropdownMenuItem onClick={logout}>Logout</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <NavItem
+                to={"/login"}
+                label={"Login"}
+              />
+            )}
           </div>
 
           <DropdownMenu>
@@ -50,13 +86,60 @@ export default function Navbar() {
             </DropdownMenuTrigger>
 
             <DropdownMenuContent align="end">
-              <DropdownMenuItem asChild>
+              <DropdownMenuItem
+                asChild
+                className="cursor-pointer"
+              >
                 <Link to={"/tasks"}>Task Board</Link>
               </DropdownMenuItem>
 
-              <DropdownMenuItem asChild>
+              <DropdownMenuItem
+                asChild
+                className="cursor-pointer"
+              >
                 <Link to={"/jobs"}>Job Listing</Link>
               </DropdownMenuItem>
+
+              <DropdownMenuSeparator />
+
+              {user ? (
+                <DropdownMenuSub>
+                  <DropdownMenuSubTrigger
+                    asChild
+                    className="cursor-pointer"
+                  >
+                    <span className="mr-auto">{user.email}</span>
+                    <ChevronDown className="w-4 h-4 ml-2" />
+                  </DropdownMenuSubTrigger>
+
+                  <DropdownMenuPortal>
+                    <DropdownMenuSubContent>
+                      <DropdownMenuItem
+                        asChild
+                        className="cursor-pointer"
+                      >
+                        <Link to={"/my-listings"}>My Listings</Link>
+                      </DropdownMenuItem>
+
+                      <DropdownMenuSeparator />
+
+                      <DropdownMenuItem
+                        onClick={logout}
+                        className="cursor-pointer"
+                      >
+                        Logout
+                      </DropdownMenuItem>
+                    </DropdownMenuSubContent>
+                  </DropdownMenuPortal>
+                </DropdownMenuSub>
+              ) : (
+                <DropdownMenuItem
+                  asChild
+                  className="cursor-pointer"
+                >
+                  <Link to={"/login"}>Login</Link>
+                </DropdownMenuItem>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -72,14 +155,12 @@ type NavItemPropsType = {
 
 function NavItem({ to, label }: NavItemPropsType) {
   return (
-    <div>
-      <Button
-        asChild
-        variant={"ghost"}
-      >
-        <Link to={to}>{label}</Link>
-      </Button>
-    </div>
+    <Button
+      asChild
+      variant={"ghost"}
+    >
+      <Link to={to}>{label}</Link>
+    </Button>
   );
 }
 
@@ -94,9 +175,6 @@ function ThemeToggleButton() {
           size="icon"
           className="data-[state=open]:bg-slate-100 dark:data-[state=open]:bg-slate-800 cursor-pointer"
         >
-          {/* <Sun className="h-5 w-5 scale=100 dark:scale-0 transition-transform" />
-          <Moon className="absolute h-5 w-5 scale=0 dark:scale-100 transition-transform" /> */}
-
           {isDark ? (
             <Sun className="h-5 w-5 transition-all animate-out" />
           ) : (
