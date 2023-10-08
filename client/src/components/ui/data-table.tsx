@@ -7,7 +7,7 @@ import {
   getCoreRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table"
+} from "@tanstack/react-table";
 
 import {
   Table,
@@ -16,24 +16,24 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-import { cn } from "@/utils/shadcnUtils"
+} from "@/components/ui/table";
+import { cn } from "@/utils/shadcnUtils";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu"
-import { ArrowDownIcon, ArrowUpIcon, ChevronsUpDown, X } from "lucide-react"
-import { Button } from "./button"
-import { Key, useState } from "react"
-import { AnimatePresence, motion } from "framer-motion"
+} from "@/components/ui/dropdown-menu";
+import { ArrowDownIcon, ArrowUpIcon, ChevronsUpDown, X } from "lucide-react";
+import { Button } from "./button";
+import { Key, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
 interface DataTableProps<TData, TValue = never> {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[]
-  getRowKey: (row: Row<TData>) => Key
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
+  getRowKey: (row: Row<TData>) => Key;
 }
 
 export function DataTable<TData, TValue = never>({
@@ -41,7 +41,7 @@ export function DataTable<TData, TValue = never>({
   data,
   getRowKey,
 }: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = useState<SortingState>([])
+  const [sorting, setSorting] = useState<SortingState>([]);
   const table = useReactTable({
     data,
     columns,
@@ -49,25 +49,22 @@ export function DataTable<TData, TValue = never>({
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
     state: { sorting },
-  })
+  });
 
   return (
     <div className="rounded-md border">
       <Table>
         <TableHeader>
-          {table.getHeaderGroups().map(headerGroup => (
+          {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map(header => {
+              {headerGroup.headers.map((header) => {
                 return (
                   <TableHead key={header.id}>
                     {header.isPlaceholder
                       ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                      : flexRender(header.column.columnDef.header, header.getContext())}
                   </TableHead>
-                )
+                );
               })}
             </TableRow>
           ))}
@@ -75,7 +72,7 @@ export function DataTable<TData, TValue = never>({
         <TableBody>
           {table.getRowModel().rows?.length ? (
             <AnimatePresence initial={false}>
-              {table.getRowModel().rows.map(row => (
+              {table.getRowModel().rows.map((row) => (
                 <MotionTableRow
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -83,12 +80,9 @@ export function DataTable<TData, TValue = never>({
                   key={getRowKey(row)}
                   data-state={row.getIsSelected() && "selected"}
                 >
-                  {row.getVisibleCells().map(cell => (
+                  {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
                 </MotionTableRow>
@@ -96,7 +90,10 @@ export function DataTable<TData, TValue = never>({
             </AnimatePresence>
           ) : (
             <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
+              <TableCell
+                colSpan={columns.length}
+                className="h-24 text-center"
+              >
                 No results.
               </TableCell>
             </TableRow>
@@ -104,15 +101,14 @@ export function DataTable<TData, TValue = never>({
         </TableBody>
       </Table>
     </div>
-  )
+  );
 }
 
-const MotionTableRow = motion(TableRow)
+const MotionTableRow = motion(TableRow);
 
-interface DataTableColumnHeaderProps<TData, TValue>
-  extends React.HTMLAttributes<HTMLDivElement> {
-  column: Column<TData, TValue>
-  title: string
+interface DataTableColumnHeaderProps<TData, TValue> extends React.HTMLAttributes<HTMLDivElement> {
+  column: Column<TData, TValue>;
+  title: string;
 }
 
 export function DataTableColumnHeader<TData, TValue>({
@@ -121,7 +117,7 @@ export function DataTableColumnHeader<TData, TValue>({
   className,
 }: DataTableColumnHeaderProps<TData, TValue>) {
   if (!column.getCanSort()) {
-    return <div className={cn(className)}>{title}</div>
+    return <div className={cn(className)}>{title}</div>;
   }
 
   return (
@@ -144,21 +140,30 @@ export function DataTableColumnHeader<TData, TValue>({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start">
-          <DropdownMenuItem onClick={() => column.toggleSorting(false)}>
+          <DropdownMenuItem
+            className="cursor-pointer"
+            onClick={() => column.toggleSorting(false)}
+          >
             <ArrowUpIcon className="mr-2 h-3.5 w-3.5 text-slate-500/70" />
             Asc
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => column.toggleSorting(true)}>
+          <DropdownMenuItem
+            className="cursor-pointer"
+            onClick={() => column.toggleSorting(true)}
+          >
             <ArrowDownIcon className="mr-2 h-3.5 w-3.5 text-slate-500/70" />
             Desc
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => column.clearSorting()}>
+          <DropdownMenuItem
+            className="cursor-pointer"
+            onClick={() => column.clearSorting()}
+          >
             <X className="mr-2 h-3.5 w-3.5 text-slate-500/70" />
             Clear Sort
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
-  )
+  );
 }
