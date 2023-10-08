@@ -7,7 +7,7 @@ export function NewJobListingsPage() {
 
   return (
     <>
-      <PageHeader>New Listings</PageHeader>
+      <PageHeader>New Listing</PageHeader>
       <JobListingForm
         onSubmit={async (values) => {
           await createJobListing(values);

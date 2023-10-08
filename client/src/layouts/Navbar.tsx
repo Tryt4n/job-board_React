@@ -54,13 +54,21 @@ export default function Navbar() {
                 </DropdownMenuTrigger>
 
                 <DropdownMenuContent>
-                  <DropdownMenuItem asChild>
+                  <DropdownMenuItem
+                    className="cursor-pointer"
+                    asChild
+                  >
                     <Link to={"/jobs/my-listings"}>My Listings</Link>
                   </DropdownMenuItem>
 
                   <DropdownMenuSeparator />
 
-                  <DropdownMenuItem onClick={logout}>Logout</DropdownMenuItem>
+                  <DropdownMenuItem
+                    className="cursor-pointer"
+                    onClick={logout}
+                  >
+                    Logout
+                  </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (

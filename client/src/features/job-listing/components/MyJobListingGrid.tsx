@@ -78,7 +78,7 @@ function MyJobListingCard({ jobListing, deleteJobListing }: MyJobListingCardProp
             variant={"outline"}
             asChild
           >
-            <Link to={`/jobs/${jobListing.id}`}>Edit</Link>
+            <Link to={`/jobs/${jobListing.id}/edit`}>Edit</Link>
           </Button>
         </>
       }
