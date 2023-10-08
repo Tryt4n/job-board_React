@@ -126,7 +126,7 @@ export default function Navbar() {
                         asChild
                         className="cursor-pointer"
                       >
-                        <Link to={"/my-listings"}>My Listings</Link>
+                        <Link to={"/jobs/my-listings"}>My Listings</Link>
                       </DropdownMenuItem>
 
                       <DropdownMenuSeparator />
